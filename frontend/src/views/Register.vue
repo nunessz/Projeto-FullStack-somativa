@@ -160,17 +160,33 @@ async function handleSubmit() {
 
   loading.value = true;
 
-  const result = await usuariosStore.createUsuario(formData.value);
+  try {
+    // Usa a store para criar usuário (seu backend já criptografa)
+    const result = await usuariosStore.createUsuario(formData.value);
 
-  loading.value = false;
-
-  if (result.success) {
-    successMessage.value = 'Conta criada com sucesso! Redirecionando...';
-    setTimeout(() => {
-      router.push('/login');
-    }, 2000);
-  } else {
-    errorMessage.value = result.error;
+    if (result.success) {
+      successMessage.value = 'Conta criada com sucesso! Redirecionando...';
+      
+      // Limpa o formulário
+      formData.value = {
+        name: '',
+        email: '',
+        password: '',
+        role: 'Usuario'
+      };
+      confirmPassword.value = '';
+      
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
+    } else {
+      errorMessage.value = result.error || 'Erro ao criar conta';
+    }
+  } catch (error) {
+    errorMessage.value = 'Erro ao criar conta. Verifique sua conexão.';
+    console.error('Erro no cadastro:', error);
+  } finally {
+    loading.value = false;
   }
 }
 </script>

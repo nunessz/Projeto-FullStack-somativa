@@ -149,35 +149,38 @@ function loadGoogleScript() {
 async function handleSubmit() {
   errorMessage.value = '';
   successMessage.value = '';
-
   loading.value = true;
 
   try {
-    const result = await usuariosStore.fetchUsuarios();
+    // Chama a rota de login no backend (valida com bcrypt)
+    const response = await fetch('http://localhost:3000/api/usuarios/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: formData.value.email,
+        password: formData.value.password
+      })
+    });
+
+    const result = await response.json();
 
     if (result.success) {
-      const user = usuariosStore.usuarios.find(
-        u => u.email === formData.value.email && u.password === formData.value.password
-      );
-
-      if (user) {
-        successMessage.value = 'Login realizado com sucesso! Redirecionando...';
-        
-        // Salva usuário diretamente
-        usuariosStore.currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        
-        setTimeout(() => {
-          router.push('/');
-        }, 1500);
-      } else {
-        errorMessage.value = 'Email ou senha incorretos';
-      }
+      successMessage.value = 'Login realizado com sucesso! Redirecionando...';
+      
+      // Salva usuário logado na store e localStorage
+      usuariosStore.currentUser = result.usuario;
+      localStorage.setItem('currentUser', JSON.stringify(result.usuario));
+      
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
     } else {
-      errorMessage.value = 'Erro ao verificar credenciais';
+      errorMessage.value = result.error || 'Email ou senha incorretos';
     }
   } catch (error) {
-    errorMessage.value = 'Erro ao realizar login';
+    errorMessage.value = 'Erro ao realizar login. Verifique sua conexão.';
     console.error('Erro no login:', error);
   } finally {
     loading.value = false;
