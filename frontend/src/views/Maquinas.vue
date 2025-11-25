@@ -1,10 +1,11 @@
 <template>
   <section class="min-h-[calc(100vh-132px)] p-10 flex flex-col max-w-6xl mx-auto">
+    <!-- Header -->
     <div class="mb-12 relative">
       <div class="absolute inset-0 bg-gradient-to-r from-orange-400/20 to-transparent rounded-2xl blur-2xl"></div>
       <div class="relative flex items-center gap-4">
         <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-500">
-          Máquinas
+          Minhas Máquinas
         </h2>
         <span class="px-4 py-1.5 bg-orange-400 text-white rounded-full text-lg font-bold shadow-lg">
           {{ storeM.totalMaquinas }}
@@ -13,30 +14,14 @@
       <div class="relative h-1 w-32 bg-gradient-to-r from-orange-400 to-transparent rounded-full mt-3"></div>
     </div>
 
-    <div class="group relative bg-gradient-to-br from-white to-orange-50/30 rounded-3xl border-2 border-orange-100 
-                hover:border-orange-400 transition-all duration-500 p-8 mb-12 shadow-xl hover:shadow-2xl">
-      <div class="absolute inset-0 bg-gradient-to-br from-orange-400/5 to-transparent rounded-3xl 
-                  opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-      
-      <MaquinaForm
-        v-if="!editingM"
-        :submitting="storeM.loading"
-        @submit="storeM.addMaquina"
-        class="relative z-10"
-      />
-      
-      <MaquinaForm
-        v-else
-        :initial="editingM"
-        :submitting="storeM.loading"
-        @submit="(payload) => { storeM.updateMaquina(editingM._id, payload); editingM=null; }"
-        @cancel="cancelEditM"
-        edit
-        class="relative z-10"
-      />
+    <!-- Loading -->
+    <div v-if="storeM.loading && storeM.maquinas.length === 0" class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-orange-400 border-t-transparent"></div>
+      <p class="mt-4 text-gray-600">Carregando máquinas...</p>
     </div>
 
-    <div v-if="storeM.error" 
+    <!-- Erro -->
+    <div v-else-if="storeM.error" 
          class="bg-red-50 border-l-4 border-red-600 text-red-600 p-4 mb-8 rounded-r-xl shadow-md">
       <p class="font-semibold flex items-center gap-2">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -46,16 +31,43 @@
       </p>
     </div>
 
-    <div class="bg-white rounded-3xl border-2 border-orange-100 shadow-2xl overflow-hidden 
-                hover:shadow-orange-400/20 transition-shadow duration-500">
-      <MaquinaList
-        :maquina="storeM.maquinas"
-        @edit="editM"
-        @remove="storeM.removeMaquina"
-      />
-    </div>
-  </section>
+    <!-- Conteúdo -->
+    <template v-else>
+      <!-- Formulário -->
+      <div class="group relative bg-gradient-to-br from-white to-orange-50/30 rounded-3xl border-2 border-orange-100 
+                  hover:border-orange-400 transition-all duration-500 p-8 mb-12 shadow-xl hover:shadow-2xl">
+        <div class="absolute inset-0 bg-gradient-to-br from-orange-400/5 to-transparent rounded-3xl 
+                    opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        
+        <MaquinaForm
+          v-if="!editingM"
+          :submitting="storeM.loading"
+          @submit="storeM.addMaquina"
+          class="relative z-10"
+        />
+        
+        <MaquinaForm
+          v-else
+          :initial="editingM"
+          :submitting="storeM.loading"
+          @submit="(payload) => { storeM.updateMaquina(editingM._id, payload); editingM=null; }"
+          @cancel="cancelEditM"
+          edit
+          class="relative z-10"
+        />
+      </div>
 
+      <!-- Lista -->
+      <div class="bg-white rounded-3xl border-2 border-orange-100 shadow-2xl overflow-hidden 
+                  hover:shadow-orange-400/20 transition-shadow duration-500">
+        <MaquinaList
+          :maquina="storeM.maquinas"
+          @edit="editM"
+          @remove="storeM.removeMaquina"
+        />
+      </div>
+    </template>
+  </section>
 </template>
 
 <script setup>
@@ -78,5 +90,4 @@ function editM(maquina) {
 function cancelEditM() {
   editingM.value = null;
 }
-
 </script>
