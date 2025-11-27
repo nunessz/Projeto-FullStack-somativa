@@ -3,6 +3,37 @@ import Usuario from "../models/Usuario.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /api/usuarios:
+ *   post:
+ *     tags: [Usuários]
+ *     summary: Criar novo usuário (Registro)
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usuário criado com sucesso
+ *       400:
+ *         description: Email já cadastrado ou dados inválidos
+ */
 // ============================================
 // POST - CRIAR USUÁRIO (REGISTRO)
 // ============================================
@@ -47,6 +78,32 @@ router.post("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios/login:
+ *   post:
+ *     tags: [Usuários]
+ *     summary: Login de usuário
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *       401:
+ *         description: Email ou senha incorretos
+ */
 // ============================================
 // POST - LOGIN
 // ============================================
@@ -103,6 +160,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios:
+ *   get:
+ *     tags: [Usuários]
+ *     summary: Buscar todos os usuários
+ *     responses:
+ *       200:
+ *         description: Lista de usuários
+ */
 // ============================================
 // GET - BUSCAR TODOS OS USUÁRIOS
 // ============================================
@@ -126,6 +193,24 @@ router.get("/", async (_req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   get:
+ *     tags: [Usuários]
+ *     summary: Buscar usuário por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dados do usuário
+ *       404:
+ *         description: Usuário não encontrado
+ */
 // ============================================
 // GET - BUSCAR USUÁRIO POR ID
 // ============================================
@@ -153,6 +238,30 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   put:
+ *     tags: [Usuários]
+ *     summary: Atualizar usuário
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Usuário atualizado
+ *       404:
+ *         description: Usuário não encontrado
+ */
 // ============================================
 // PUT - ATUALIZAR USUÁRIO
 // ============================================
@@ -205,6 +314,24 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   delete:
+ *     tags: [Usuários]
+ *     summary: Deletar usuário
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Usuário deletado
+ *       404:
+ *         description: Usuário não encontrado
+ */
 // ============================================
 // DELETE - DELETAR USUÁRIO
 // ============================================

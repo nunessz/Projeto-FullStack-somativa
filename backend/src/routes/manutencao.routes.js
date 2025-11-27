@@ -4,6 +4,24 @@ import Maquina from '../models/Maquina.js';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/manutencoes:
+ *   get:
+ *     tags: [Manutenções]
+ *     summary: Buscar todas as manutenções do usuário
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de manutenções
+ *       401:
+ *         description: Usuário não autenticado
+ */
 // GET - Buscar todas as manutenções (filtrado por usuário)
 router.get('/', async (req, res) => {
   try {
@@ -29,6 +47,24 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/manutencoes/{id}:
+ *   get:
+ *     tags: [Manutenções]
+ *     summary: Buscar manutenção por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dados da manutenção
+ *       404:
+ *         description: Manutenção não encontrada
+ */
 // GET - Buscar manutenção por ID
 router.get('/:id', async (req, res) => {
   try {
@@ -46,6 +82,42 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/manutencoes:
+ *   post:
+ *     tags: [Manutenções]
+ *     summary: Criar nova manutenção
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - maquina
+ *               - dataAgendada
+ *               - tecnico
+ *               - descricao
+ *               - userId
+ *             properties:
+ *               maquina:
+ *                 type: string
+ *               dataAgendada:
+ *                 type: string
+ *                 format: date-time
+ *               tecnico:
+ *                 type: string
+ *               descricao:
+ *                 type: string
+ *               userId:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Manutenção criada com sucesso
+ *       400:
+ *         description: Dados inválidos
+ */
 // POST - Criar nova manutenção
 router.post('/', async (req, res) => {
   try {
@@ -111,6 +183,30 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/manutencoes/{id}:
+ *   put:
+ *     tags: [Manutenções]
+ *     summary: Atualizar manutenção
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Manutenção atualizada
+ *       404:
+ *         description: Manutenção não encontrada
+ */
 // PUT - Atualizar manutenção
 router.put('/:id', async (req, res) => {
   try {
@@ -162,6 +258,24 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/manutencoes/{id}:
+ *   delete:
+ *     tags: [Manutenções]
+ *     summary: Deletar manutenção
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Manutenção deletada
+ *       404:
+ *         description: Manutenção não encontrada
+ */
 // DELETE - Deletar manutenção
 router.delete('/:id', async (req, res) => {
   try {
@@ -191,6 +305,22 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/manutencoes/maquina/{maquinaId}:
+ *   get:
+ *     tags: [Manutenções]
+ *     summary: Buscar manutenções por máquina
+ *     parameters:
+ *       - in: path
+ *         name: maquinaId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de manutenções da máquina
+ */
 // GET - Buscar manutenções por máquina
 router.get('/maquina/:maquinaId', async (req, res) => {
   try {
@@ -205,6 +335,22 @@ router.get('/maquina/:maquinaId', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/manutencoes/status/{status}:
+ *   get:
+ *     tags: [Manutenções]
+ *     summary: Buscar manutenções por status
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de manutenções com o status especificado
+ */
 // GET - Buscar manutenções por status
 router.get('/status/:status', async (req, res) => {
   try {

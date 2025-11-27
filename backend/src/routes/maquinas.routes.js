@@ -3,6 +3,37 @@ import Maquina from "../models/Maquina.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /api/maquinas:
+ *   post:
+ *     tags: [Máquinas]
+ *     summary: Criar nova máquina
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - type
+ *               - usuario
+ *             properties:
+ *               name:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               usuario:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Máquina criada com sucesso
+ *       400:
+ *         description: Dados inválidos
+ */
 // ============================================
 // POST - CRIAR MÁQUINA (vinculada ao usuário)
 // ============================================
@@ -45,6 +76,22 @@ router.post("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/maquinas/usuario/{usuarioId}:
+ *   get:
+ *     tags: [Máquinas]
+ *     summary: Buscar máquinas do usuário
+ *     parameters:
+ *       - in: path
+ *         name: usuarioId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de máquinas do usuário
+ */
 // ============================================
 // GET - BUSCAR MÁQUINAS DO USUÁRIO
 // ============================================
@@ -73,6 +120,16 @@ router.get("/usuario/:usuarioId", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/maquinas:
+ *   get:
+ *     tags: [Máquinas]
+ *     summary: Buscar todas as máquinas (ADMIN)
+ *     responses:
+ *       200:
+ *         description: Lista de todas as máquinas
+ */
 // ============================================
 // GET - BUSCAR TODAS (ADMIN)
 // ============================================
@@ -96,6 +153,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/maquinas/{id}:
+ *   get:
+ *     tags: [Máquinas]
+ *     summary: Buscar máquina por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dados da máquina
+ *       404:
+ *         description: Máquina não encontrada
+ */
 // ============================================
 // GET - BUSCAR POR ID
 // ============================================
@@ -124,6 +199,30 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/maquinas/{id}:
+ *   put:
+ *     tags: [Máquinas]
+ *     summary: Atualizar máquina
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Máquina atualizada
+ *       404:
+ *         description: Máquina não encontrada
+ */
 // ============================================
 // PUT - ATUALIZAR
 // ============================================
@@ -164,6 +263,24 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/maquinas/{id}:
+ *   delete:
+ *     tags: [Máquinas]
+ *     summary: Deletar máquina
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Máquina deletada
+ *       404:
+ *         description: Máquina não encontrada
+ */
 // ============================================
 // DELETE - DELETAR
 // ============================================
