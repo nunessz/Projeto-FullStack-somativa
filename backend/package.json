@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "node --env-file=.env src/server.js",
-    "start": "NODE_ENV=production node src/server.js"
+    "start": "NODE_ENV=production node src/server.js",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -21,5 +23,12 @@
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^4.0.15",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^27.3.0",
+    "vitest": "^4.0.15"
   }
+  
 }
