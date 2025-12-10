@@ -7,6 +7,7 @@ import { setupSwagger } from "./config/swagger.js";
 import maquinaRouter from "./routes/maquinas.routes.js";
 import usuarioRouter from "./routes/usuarios.routes.js";
 import manutencaoRouter from "./routes/manutencao.routes.js";
+import authRouter from "./routes/auth.routes.js";
 
 config();
 
@@ -18,16 +19,15 @@ app.use(morgan("dev"));
 
 await connectDB();
 
-// ============================================
-// CONFIGURAR SWAGGER
-// ============================================
 setupSwagger(app);
 
 app.use("/api/maquinas", maquinaRouter);
 app.use("/api/usuarios", usuarioRouter);
 app.use("/api/manutencoes", manutencaoRouter);
+app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 API rodando em http://localhost:${PORT}`);
+  console.log(`API rodando em http://localhost:${PORT}`);
+  console.log(`Login com Google disponível em /api/auth/google`);
 });

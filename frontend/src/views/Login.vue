@@ -152,7 +152,6 @@ async function handleSubmit() {
   loading.value = true;
 
   try {
-    // Chama a rota de login no backend (valida com bcrypt)
     const response = await fetch('http://localhost:3000/api/usuarios/login', {
       method: 'POST',
       headers: {
@@ -169,7 +168,6 @@ async function handleSubmit() {
     if (result.success) {
       successMessage.value = 'Login realizado com sucesso! Redirecionando...';
       
-      // Salva usuário logado na store e localStorage
       usuariosStore.currentUser = result.usuario;
       localStorage.setItem('currentUser', JSON.stringify(result.usuario));
       
@@ -188,14 +186,45 @@ async function handleSubmit() {
 }
 
 async function handleGoogleResponse(response) {
-  console.log("Token JWT do Google:", response.credential);
+  console.log("Token JWT do Google recebido");
   
   try {
     errorMessage.value = '';
-    successMessage.value = 'Login com Google em desenvolvimento...';
+    loading.value = true;
+    
+    const result = await fetch('http://localhost:3000/api/auth/google', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: response.credential
+      })
+    });
+
+    const data = await result.json();
+
+    if (data.success) {
+      successMessage.value = 'Login com Google realizado com sucesso! Redirecionando...';
+      
+      usuariosStore.currentUser = data.usuario;
+      localStorage.setItem('currentUser', JSON.stringify(data.usuario));
+      
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+      }
+      
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
+    } else {
+      errorMessage.value = data.error || 'Erro ao fazer login com Google';
+    }
   } catch (error) {
     console.error('Erro ao logar com Google:', error);
     errorMessage.value = 'Erro ao fazer login com Google';
+  } finally {
+    loading.value = false;
   }
 }
 </script>

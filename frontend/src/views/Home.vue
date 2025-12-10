@@ -19,22 +19,5 @@
         </div>
       </div>
     </div>
-
-    <div class="flex justify-center items-center mt-10">
-      <button
-        class="group relative bg-gradient-to-r from-orange-400 to-orange-500 text-white px-12 py-5 rounded-2xl 
-               shadow-lg shadow-orange-400/30 hover:shadow-2xl hover:shadow-orange-400/50 
-               hover:scale-110 transition-all duration-300 overflow-hidden"
-        type="button"
-      >
-        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-        <span class="relative text-xl font-bold tracking-wide flex items-center gap-3">
-          Solicitar orçamento
-          <svg class="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </span>
-      </button>
-    </div>
   </div>
 </template>
